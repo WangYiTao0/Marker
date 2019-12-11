@@ -19,10 +19,10 @@ public:
 	void SetPosition(const float x, float y) { SetPosition({ x,y }); }
 	const Vec2& GetPosition(void) const { return m_position; }
 	void SetNum(int num);
-	bool IsInRange(const Vec2& position) const;
-
 	int GetDistanceToCameraMarker(Vec2& CameraMarkerPos);
 
+
+	virtual bool IsInRange(const Vec2& position) const;
 	virtual void Draw(void) const;
 protected:
 	const float MARKER_RADIUS = 20;

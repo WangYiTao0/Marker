@@ -1,4 +1,4 @@
-#include "MarkerManager.h"
+﻿#include "MarkerManager.h"
 
 MarkerManager::MarkerManager()
 {
@@ -24,13 +24,23 @@ bool MarkerManager::IsCaptureMarker()
 	return it != m_Marker.end();
 }
 
-void MarkerManager::MoveCaptureMarket(float x, float y)
+void MarkerManager::MoveCapturedMarker(float x, float y)
 {
 	if (it != m_Marker.end())
 	{
 		it->get()->SetPosition(x, y);
 		it->get()->SetMarkerState(Marker::MarkerState::isCapture);
 	}
+}
+
+void MarkerManager::MoveCaptureCamMarker(float x, float y)
+{
+	m_CamMarker->SetPosition({ x,y });
+}
+
+bool MarkerManager::CaptureCamMarker(float x, float y)
+{
+	return m_CamMarker->IsInRange({ x, y });
 }
 
 bool MarkerManager::CaptureMarker(float x, float y)
@@ -57,32 +67,35 @@ void MarkerManager::SetMarker(float x, float y)
 void MarkerManager::DeleteMarker(Vec2 mousePosStart, Vec2 mousePosEnd)
 {
 
-	m_Marker.erase(m_Marker.begin()+2, m_Marker.begin()+5);
-	//float left, right, top, bottom;
-	//if (mousePosStart.x > mousePosEnd.x)
-	//{
-	//	std::swap(mousePosStart.x, mousePosEnd.x);
-	//}
-	//if (mousePosStart.y > mousePosEnd.y)
-	//{
-	//	std::swap(mousePosStart.y, mousePosEnd.y);
-	//}
-	//
-	//Rect(mousePosStart.x, mousePosStart.y, mousePosEnd.x, mousePosEnd.y).drawFrame(2, 2, Palette::Red);
+	if (mousePosStart.x > mousePosEnd.x)
+	{
+		std::swap(mousePosStart.x, mousePosEnd.x);
+	}
+	if (mousePosStart.y > mousePosEnd.y)
+	{
+		std::swap(mousePosStart.y, mousePosEnd.y);
+	}
 
-	//m_Marker.erase(std::remove_if(m_Marker.begin(), m_Marker.end(),
-	//	[mousePosStart, mousePosEnd](std::unique_ptr<Marker>& m) {
-	//		return m->GetPosition().x >= mousePosStart.x && m->GetPosition().x <= mousePosEnd.x
-	//			&& m->GetPosition().y <= mousePosStart.y && m->GetPosition().y >= mousePosEnd.y;
-	//	}));
-	std::sort(m_Marker.begin(), m_Marker.end());
+	const RectF R = RectF(mousePosStart, mousePosStart-mousePosEnd).drawFrame(2, 2, Palette::Red);
+
+	// remove_if 把要不要删除的元素 前移 返回最后一个不移除元素的下一个位置
+	// 新的逻辑终点 到 序列最后 就是要删除的元素
+
+	m_Marker.erase(std::remove_if(m_Marker.begin(), m_Marker.end(),
+		[mousePosStart, mousePosEnd](std::unique_ptr<Marker>& m)
+		{
+			return m->GetPosition().x >= mousePosStart.x && m->GetPosition().x <= mousePosEnd.x
+				&& m->GetPosition().y >= mousePosStart.y && m->GetPosition().y <= mousePosEnd.y;
+		}),m_Marker.end());
+
+	ReNum();
 }
 
 void MarkerManager::ReNum()
 {
-	for (auto it = m_Marker.begin(); it != m_Marker.end(); it++)
+	for (it = m_Marker.begin(); it != m_Marker.end(); it++)
 	{
-		it->get()->SetNum(it - m_Marker.begin());
+		it->get()->SetNum(std::distance(m_Marker.begin(), it));
 	}
 }
 

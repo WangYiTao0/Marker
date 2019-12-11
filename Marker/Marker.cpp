@@ -21,11 +21,13 @@ void Marker::SetNum(int num)
 
 bool Marker::IsInRange(const Vec2& position) const
 {
-	float xlen = m_position.x - position.x;
-	float ylen = m_position.y - position.y;
-	float sqlen = xlen * xlen + ylen * ylen;
+	//m_position.distanceFrom(position);
 
-	return sqlen <= MARKER_RADIUS * MARKER_RADIUS;
+	//float xlen = m_position.x - position.x;
+	//float ylen = m_position.y - position.y;
+	//float sqlen = xlen * xlen + ylen * ylen;
+
+	return m_position.distanceFrom(position) <= MARKER_RADIUS;
 }
 
 int Marker::GetDistanceToCameraMarker(Vec2& CameraMarkerPos)
@@ -41,10 +43,12 @@ void Marker::Draw(void) const
 	if (m_Marker.leftPressed())
 	{
 		markerColor = Palette::Darkblue;
+		m_Marker.draw(markerColor);
 	}
 	else if(m_Marker.mouseOver())
 	{
 		markerColor = Palette::Skyblue;
+		m_Marker.drawShadow(Vec2(3.0f,0.0f),10.0f).draw(markerColor);
 	}
 	m_Marker.draw(markerColor);
 	

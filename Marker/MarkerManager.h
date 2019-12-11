@@ -18,8 +18,14 @@ public:
 	*/
 
 	int GetDrawCount();
+
 	bool IsCaptureMarker();
-	void MoveCaptureMarket(float x, float y);
+	void MoveCapturedMarker(float x, float y);
+	
+	bool CaptureCamMarker(float x, float y);
+	void MoveCaptureCamMarker(float x, float y);
+
+	
 	bool CaptureMarker(float x, float y);
 	void ReleaseMarker();
 	void SetMarker(float x, float y);

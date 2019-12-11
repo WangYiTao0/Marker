@@ -4,6 +4,9 @@ App::App()
 {
 	AssetRegiseter();
 
+	// ウィンドウを手動リサイズ可能にする
+	Window::SetStyle(WindowStyle::Sizable);
+
 	Window::Resize({ 1280,720 });
 	// 背景を水色にする
 	Scene::SetBackground(Palette::White);
@@ -11,52 +14,50 @@ App::App()
 
 void App::Update()
 {
-	
-		if (MouseL.pressed())
+
+	if (MouseL.pressed())
+	{
+		if (m_Manager.CaptureCamMarker(Cursor::PosF().x, Cursor::PosF().y))
 		{
-			const auto mouseStartPos = Cursor::PosF();
-			if (m_Manager.CaptureMarker(Cursor::PosF().x, Cursor::PosF().y))
-			{
-				IsCapture = true;
-				m_Manager.MoveCaptureMarket(Cursor::PosF().x, Cursor::PosF().y);
-			}
-			else
-			{
-				m_Manager.SetMarker(Cursor::PosF().x, Cursor::PosF().y);
-			}
-		}
-		else if (MouseL.up())
-		{
-			IsCapture = false;
-			m_Manager.ReleaseMarker();
-		}
-		if (MouseL.down())
-		{
-			effect.add<RingEffect>(Cursor::Pos());
-			if (!m_Manager.CaptureMarker(Cursor::PosF().x, Cursor::PosF().y))
-			{
-				m_Manager.SetMarker(Cursor::PosF().x, Cursor::PosF().y);
-			}
-		}
-		
-		Vec2 pos = Cursor::PosF();
-		Vec2 startPos = Vec2::Zero();
-		Vec2 endPos = Vec2::Zero();
-		if (MouseR.down())
-		{
-			startPos = pos;
-			if (m_Manager.CaptureMarker(Cursor::PosF().x, Cursor::PosF().y))
-			{
-				m_Manager.DeleteMarker(startPos, endPos);
-			}
-		}
-		if (MouseR.up())
-		{
-			endPos = pos;
+			m_Manager.MoveCaptureCamMarker(Cursor::PosF().x, Cursor::PosF().y);
 		}
 
-		//Rect(startPos.x, startPos.y, endPos.x, endPos.y).drawFrame(2, 2, Palette::Red);
-		//m_Manager.DeleteMarker(startPos, endPos);
+		if (m_Manager.CaptureMarker(Cursor::PosF().x, Cursor::PosF().y))
+		{
+			IsCapture = true;
+			m_Manager.MoveCapturedMarker(Cursor::PosF().x, Cursor::PosF().y);
+		}
+		else
+		{
+			m_Manager.SetMarker(Cursor::PosF().x, Cursor::PosF().y);
+		}
+	}
+	else if (MouseL.up())
+	{
+		IsCapture = false;
+		m_Manager.ReleaseMarker();
+	}
+	if (MouseL.down())
+	{
+		effect.add<RingEffect>(Cursor::Pos());
+		if (!m_Manager.CaptureMarker(Cursor::PosF().x, Cursor::PosF().y))
+		{
+			m_Manager.SetMarker(Cursor::PosF().x, Cursor::PosF().y);
+		}
+	}
+
+	Vec2 pos = Cursor::PosF();
+
+
+	if (MouseR.down())
+	{
+		startPos = pos;
+	}
+	else if (MouseR.up())
+	{
+		endPos = pos;
+		m_Manager.DeleteMarker(startPos, endPos);
+	}
 
 	effect.update();
 	m_Manager.CameraMarkerSort();
@@ -75,5 +76,5 @@ void App::AssetRegiseter()
 	FontAsset::Register(U"font0", 20, Typeface::Heavy);
 	FontAsset::Register(U"font1", 20, Typeface::Black);
 	FontAsset::Register(U"font2", 20, Typeface::Regular);
-	FontAsset::Register(U"font4", 20, Typeface::Light);
+	FontAsset::Register(U"font4", 15, Typeface::Medium);
 }

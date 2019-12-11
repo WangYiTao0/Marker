@@ -40,6 +40,9 @@ private:
 
 	MarkerManager m_Manager;
 
+    Vec2 startPos = Vec2::Zero();
+    Vec2 endPos = Vec2::Zero();
+
     bool IsCapture = false;
 
 };
