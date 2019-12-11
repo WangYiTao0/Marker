@@ -2,7 +2,7 @@
 
 MarkerManager::MarkerManager()
 {
-	
+	m_CamMarker = std::make_unique<CameraMarker>(200, 200,Marker::MarkerState::isFree);
 }
 
 void MarkerManager::Draw()
@@ -11,6 +11,8 @@ void MarkerManager::Draw()
 	{
 		M->Draw();
 	}
+
+	m_CamMarker->Draw();
 
 	Circle(Cursor::PosF().x, Cursor::PosF().y, 10).drawFrame(1.0f,ColorF(0.0, 0.5, 1.0, 0.8));
 }
@@ -73,5 +75,24 @@ void MarkerManager::DeleteMarker(Vec2 mousePosStart, Vec2 mousePosEnd)
 	//		return m->GetPosition().x >= mousePosStart.x && m->GetPosition().x <= mousePosEnd.x
 	//			&& m->GetPosition().y <= mousePosStart.y && m->GetPosition().y >= mousePosEnd.y;
 	//	}));
-	m_Marker
+	std::sort(m_Marker.begin(), m_Marker.end());
+}
+
+void MarkerManager::ReNum()
+{
+	for (auto it = m_Marker.begin(); it != m_Marker.end(); it++)
+	{
+		it->get()->SetNum(it - m_Marker.begin());
+	}
+}
+
+void MarkerManager::CameraMarkerSort()
+{
+	std::sort(m_Marker.begin(), m_Marker.end(), 
+		[this](const std::unique_ptr<Marker>& A, const std::unique_ptr<Marker>& B)
+		{
+			Vec2 cameraMarkerPos = m_CamMarker->GetPosition();
+
+			return A->GetDistanceToCameraMarker(cameraMarkerPos) < B->GetDistanceToCameraMarker(cameraMarkerPos);
+		});
 }

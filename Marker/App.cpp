@@ -59,7 +59,8 @@ void App::Update()
 		//m_Manager.DeleteMarker(startPos, endPos);
 
 	effect.update();
-
+	m_Manager.CameraMarkerSort();
+	m_Manager.ReNum();
 }
 
 void App::Draw()

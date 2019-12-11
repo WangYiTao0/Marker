@@ -16,5 +16,5 @@ CameraMarker::CameraMarker(float x, float y, MarkerState me)
 
 void CameraMarker::Draw(void) const
 {
-	Circle(100, 100, CameraMarker_RADIUS).draw(Palette::Chocolate);
+	Circle(m_position, CameraMarker_RADIUS).draw(Palette::Chocolate);
 }

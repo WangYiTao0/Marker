@@ -21,6 +21,7 @@ public:
 	void SetNum(int num);
 	bool IsInRange(const Vec2& position) const;
 
+	int GetDistanceToCameraMarker(Vec2& CameraMarkerPos);
 
 	virtual void Draw(void) const;
 protected:

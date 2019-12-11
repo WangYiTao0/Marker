@@ -1,5 +1,5 @@
 #pragma once
-#include "Marker.h"
+#include "CameraMarker.h"
 
 class MarkerManager
 {
@@ -25,8 +25,15 @@ public:
 	void SetMarker(float x, float y);
 	void DeleteMarker(Vec2 mousePosStart, Vec2 mousePosEnd);
 
+	void ReNum();
+	void CameraMarkerSort();
+	
+
 private:
 	std::vector<std::unique_ptr<Marker>> m_Marker;
 	std::vector<std::unique_ptr<Marker>>::iterator it;
+
+	std::unique_ptr<CameraMarker> m_CamMarker;
+
 	int drawCount = 0;
 };

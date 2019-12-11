@@ -28,6 +28,11 @@ bool Marker::IsInRange(const Vec2& position) const
 	return sqlen <= MARKER_RADIUS * MARKER_RADIUS;
 }
 
+int Marker::GetDistanceToCameraMarker(Vec2& CameraMarkerPos)
+{
+	return m_position.distanceFrom(CameraMarkerPos);
+}
+
 void Marker::Draw(void) const
 {
 	const Circle m_Marker = Circle(m_position.x, m_position.y, MARKER_RADIUS);
