@@ -76,7 +76,6 @@ void MarkerManager::DeleteMarker(Vec2 mousePosStart, Vec2 mousePosEnd)
 		std::swap(mousePosStart.y, mousePosEnd.y);
 	}
 
-	const RectF R = RectF(mousePosStart, mousePosStart-mousePosEnd).drawFrame(2, 2, Palette::Red);
 
 	// remove_if 把要不要删除的元素 前移 返回最后一个不移除元素的下一个位置
 	// 新的逻辑终点 到 序列最后 就是要删除的元素

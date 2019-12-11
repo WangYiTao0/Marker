@@ -42,6 +42,7 @@ private:
 
     Vec2 startPos = Vec2::Zero();
     Vec2 endPos = Vec2::Zero();
+    Vec2 hw = Vec2::Zero();
 
     bool IsCapture = false;
 

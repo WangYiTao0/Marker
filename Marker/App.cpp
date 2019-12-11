@@ -53,10 +53,17 @@ void App::Update()
 	{
 		startPos = pos;
 	}
+	else if (MouseR.pressed())
+	{
+		hw += Cursor::DeltaF();
+		const RectF R = RectF(startPos, hw).drawFrame(2, 2, Palette::Red);
+	
+	}
 	else if (MouseR.up())
 	{
 		endPos = pos;
 		m_Manager.DeleteMarker(startPos, endPos);
+		hw = Vec2::Zero();
 	}
 
 	effect.update();
