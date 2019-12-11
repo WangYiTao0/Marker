@@ -24,18 +24,15 @@ bool MarkerManager::IsCaptureMarker()
 
 void MarkerManager::MoveCaptureMarket(float x, float y)
 {
-	if (IsCaptureMarker())
+	if (it != m_Marker.end())
 	{
 		it->get()->SetPosition(x, y);
+		it->get()->SetMarkerState(Marker::MarkerState::isCapture);
 	}
 }
 
 bool MarkerManager::CaptureMarker(float x, float y)
 {
-	//for (auto& m:m_Marker)
-	//{
-	//		return it = m->IsMouseOver();
-	//};
 	it = std::find_if(m_Marker.begin(), m_Marker.end(),
 		[x, y](std::unique_ptr<Marker>& m)
 		{
@@ -52,27 +49,29 @@ void MarkerManager::ReleaseMarker()
 
 void MarkerManager::SetMarker(float x, float y)
 {
-	m_Marker.push_back(std::make_unique<Marker>(x, y));
+	m_Marker.push_back(std::make_unique<Marker>(x, y, Marker::MarkerState::isFree, m_Marker.size()));
 }
 
 void MarkerManager::DeleteMarker(Vec2 mousePosStart, Vec2 mousePosEnd)
 {
-	float left, right, top, bottom;
-	if (mousePosStart.x > mousePosEnd.x)
-	{
-		std::swap(mousePosStart.x, mousePosEnd.x);
-	}
-	if (mousePosStart.y > mousePosEnd.y)
-	{
-		std::swap(mousePosStart.y, mousePosEnd.y);
-	}
-	
-	Rect(mousePosStart.x, mousePosStart.y, mousePosEnd.x, mousePosEnd.y).drawFrame(2, 2, Palette::Red);
 
-	m_Marker.erase(std::remove_if(m_Marker.begin(), m_Marker.end(),
-		[mousePosStart, mousePosEnd](std::unique_ptr<Marker>& m) {
-			return m->GetPosition().x >= mousePosStart.x && m->GetPosition().x <= mousePosEnd.x
-				&& m->GetPosition().y <= mousePosStart.y && m->GetPosition().y >= mousePosEnd.y;
-		}));
+	m_Marker.erase(m_Marker.begin()+2, m_Marker.begin()+5);
+	//float left, right, top, bottom;
+	//if (mousePosStart.x > mousePosEnd.x)
+	//{
+	//	std::swap(mousePosStart.x, mousePosEnd.x);
+	//}
+	//if (mousePosStart.y > mousePosEnd.y)
+	//{
+	//	std::swap(mousePosStart.y, mousePosEnd.y);
+	//}
+	//
+	//Rect(mousePosStart.x, mousePosStart.y, mousePosEnd.x, mousePosEnd.y).drawFrame(2, 2, Palette::Red);
 
+	//m_Marker.erase(std::remove_if(m_Marker.begin(), m_Marker.end(),
+	//	[mousePosStart, mousePosEnd](std::unique_ptr<Marker>& m) {
+	//		return m->GetPosition().x >= mousePosStart.x && m->GetPosition().x <= mousePosEnd.x
+	//			&& m->GetPosition().y <= mousePosStart.y && m->GetPosition().y >= mousePosEnd.y;
+	//	}));
+	m_Marker
 }

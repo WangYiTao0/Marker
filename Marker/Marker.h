@@ -5,54 +5,27 @@
 class Marker
 {
 public:
-	class MarkerEvent
+	enum class MarkerState
 	{
-	public:
-		enum class Type
-		{
-			OndragStart,
-			Ondrag,
-			OndragEnd,
-
-			Ondrop,
-
-			Draw
-			//OndragExit,
-			//OndragLeave,
-			//dragOver,
-			//dragStart,
-			//drop
-		};
-	private:
-		Type type;
-		bool IsDrag;
-		bool IsDrop;
-	public:
-		MarkerEvent(Type type, const Marker& parent)
-			:
-			type(type),
-			IsDrag(parent.IsDrag),
-			IsDrop(parent.IsDrop)
-		{
-		}
-		Type GetType() { return type; }
-		bool GetIsDrag() { return IsDrag; }
-		bool GetIsDrop() { return IsDrop; }
+		isFree,
+		isCapture,
 	};
-public:
-	Marker(float x, float y, int num = 0);
 
+public:
+	Marker(Vec2 pos, MarkerState me = MarkerState::isFree, int num = 0);
+	Marker(float x, float y, MarkerState me = MarkerState::isFree, int num = 0);
+	void SetMarkerState(MarkerState me) { this->me = me; }
 	void SetPosition(const Vec2& position) { m_position = position; }
 	void SetPosition(const float x, float y) { SetPosition({ x,y }); }
 	const Vec2& GetPosition(void) const { return m_position; }
 	void SetNum(int num);
 	bool IsInRange(const Vec2& position) const;
-	void Draw(void) const;
-private:
-	static const float MARKER_RADIUS;
+
+
+	virtual void Draw(void) const;
+protected:
+	const float MARKER_RADIUS = 20;
 	Vec2  m_position;
 	int num;
-	bool IsDrag = false;
-	bool IsDrop = true;
-	const Circle m_Marker = Circle(m_position.x, m_position.y, 20);
+	MarkerState me;
 };
