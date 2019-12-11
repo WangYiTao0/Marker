@@ -3,41 +3,45 @@
 App::App()
 {
 	AssetRegiseter();
+
+	Window::Resize({ 1280,720 });
 	// 背景を水色にする
 	Scene::SetBackground(Palette::White);
-	// 大きさ 60 のフォントを用意
-	const Font font(60);
+	
 }
 
 void App::Update()
 {
-	if (MouseL.pressed())
+	if (MouseL.pressed() || MouseL.down())
 	{
-		const auto mouseStartPos = Cursor::PosF();
+		effect.add<RingEffect>(Cursor::Pos());
+
 		if (m_Manager.CaptureMarker(Cursor::PosF().x, Cursor::PosF().y))
 		{
 			m_Manager.MoveCaptureMarket(Cursor::PosF().x, Cursor::PosF().y);
 		}
-	
-		if (MouseL.up()) 
+		else
 		{
-			const auto mouseEndPos = Cursor::PosF();
-			m_Manager.DeleteMarker(mouseEndPos, mouseStartPos);
+			m_Manager.SetMarker(Cursor::PosF().x, Cursor::PosF().y);
 		}
-
-		
-	
 	}
-	else if (MouseL.up())
+	if (MouseL.up())
 	{
 		m_Manager.ReleaseMarker();
 	}
-	if (MouseL.down())
-	{
-		m_Manager.SetMarker(Cursor::PosF().x, Cursor::PosF().y);
-	}
 
+	//if (MouseR.pressed())
+	//{
+	//	mouseStartPos = Cursor::PosF();
+	//	if (MouseR.up())
+	//	{
+	//		mouseDelta = Cursor::PosF();
+	//	}
+	//}
 
+	//m_Manager.CameraMarkerSort();
+
+	effect.update();
 }
 
 void App::Draw()
@@ -45,6 +49,10 @@ void App::Draw()
 	FontAsset(U"font1")(U"DrawCount: ", m_Manager.GetDrawCount()).draw(5,5,Palette::Black);
 
 	m_Manager.Draw();
+
+	//m_Manager.DrawCamera();
+
+	//m_Manager.DeleteMarker(mouseStartPos, mouseDelta);
 }
 
 void App::AssetRegiseter()

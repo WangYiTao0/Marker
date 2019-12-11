@@ -11,7 +11,6 @@ Marker::Marker(float x, float y, int num)
 bool Marker::IsInRange(const Vec2& position) const
 {
 	//return m_Marker.leftPressed();
-
 	float xlen = m_position.x - position.x;
 	float ylen = m_position.y - position.y;
 	float sqlen = xlen * xlen + ylen * ylen;
@@ -19,8 +18,9 @@ bool Marker::IsInRange(const Vec2& position) const
 	return sqlen <= MARKER_RADIUS * MARKER_RADIUS;
 }
 
-void Marker::Draw(void) const
+void Marker::Draw() const
 {
+	const Circle m_Marker = Circle(m_position.x, m_position.y, 20);
 	ColorF markerColor = Palette::Gray;
 	if (m_Marker.leftPressed())
 	{
@@ -31,4 +31,12 @@ void Marker::Draw(void) const
 		markerColor = Palette::Skyblue;
 	}
 	m_Marker.draw(markerColor);
+
+	//FontAsset(U"font2")(num).draw(m_position.x,m_position.y, Palette::Black);
+
 }
+
+//void Marker::DrawCameraMarker() const
+//{
+//	Circle(100, 100, 30).draw(Palette::Chocolate);
+//}
