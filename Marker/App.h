@@ -28,7 +28,7 @@ private:
         {}
         bool update(double t) override
         {
-            // �C�[�W���O
+      
             const double e = EaseOutExpo(t);
 
             Circle(m_pos, e * 100).drawFrame(20.0 * (1.0 - e), m_color);
