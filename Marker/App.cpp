@@ -24,7 +24,6 @@ void App::Update()
 
 		if (m_Manager.CaptureMarker(Cursor::PosF().x, Cursor::PosF().y))
 		{
-			IsCapture = true;
 			m_Manager.MoveCapturedMarker(Cursor::PosF().x, Cursor::PosF().y);
 		}
 		else
